@@ -1,242 +1,449 @@
-# Fixora
+# Fixoara
 
 [![Production Ready](https://img.shields.io/badge/Release-v1.0.0--Production--Ready-brightgreen.svg)](#)
 [![Backend Framework](https://img.shields.io/badge/Backend-.NET%208%20Web%20API-blue.svg)](#)
 [![Frontend Stack](https://img.shields.io/badge/Frontend-HTML%20%2F%20CSS%20%2F%20Vanilla%20JS-orange.svg)](#)
 [![Database](https://img.shields.io/badge/Database-SQL%20Server-red.svg)](#)
+[![Authentication](https://img.shields.io/badge/Auth-JWT%20%2B%20Identity-purple.svg)](#)
+[![Real Time](https://img.shields.io/badge/Real--Time-SignalR-yellow.svg)](#)
 [![License](https://img.shields.io/badge/License-MIT-purple.svg)](#)
 
-Fixora is a next-generation, production-ready marketplace platform connecting customers with emergency home maintenance service providers. Designed as a high-performance, real-time, and role-secured application, Fixora handles the complete service lifecycle from registration, profile verification, and subscription setups to request creation, bid submission, real-time negotiation, execution tracking, and ratings.
+Fixoara is a next-generation marketplace platform connecting customers with emergency home maintenance service providers. It is designed as a high-performance, real-time, and role-secured application covering the complete service lifecycle from registration and profile verification to service requests, bidding, execution tracking, communication, and ratings.
 
 ---
 
 ## 1. Project Overview
 
 ### The Problem
-Finding reliable home maintenance services during emergencies (e.g., plumbing leaks, electrical shorts, AC failures) is often stressful, slow, and lacks transparency. Customers struggle to compare offers, while service technicians lack streamlined avenues to bid on jobs, verify credentials, and track executions.
+
+Finding reliable home maintenance services during emergencies such as plumbing leaks, electrical issues, or AC failures can be stressful, slow, and lack transparency. Customers may struggle to compare offers, while service providers need streamlined ways to bid on jobs, verify credentials, and manage service execution.
 
 ### The Solution
-Fixora bridges this gap by offering a real-time marketplace. Customers post immediate home emergency requests, and verified service providers submit competitive offers. Real-time chat, live tracking, automated status synchronization, and review systems ensure high transparency and efficiency.
+
+Fixoara bridges this gap through a real-time marketplace. Customers can post emergency home service requests, while verified service providers can submit competitive offers. Real-time chat, live tracking, status synchronization, and review systems improve transparency and efficiency.
 
 ---
 
 ## 2. Key Features
 
-- **Authentication & Security**: Strong JWT authentication, silent refresh token renewal, password encryption, and multi-layered route protection.
-- **Verification System**: Documents upload and administrative review workflows for provider onboarding.
-- **Subscription Engine**: Tiered subscription plans for service providers with automated expiration and billing triggers.
-- **Service Request Lifecycle**: Complete marketplace process including request creation, bidding, technician selection, and examination report submission.
-- **Real-Time Communication**: SignalR WebSocket integration driving instant messaging and status notification popups.
-- **Analytics & Reporting**: Interactive administrative statistics, revenue tracking, user growth timelines, and performance audit reports.
+- **Authentication & Security**: JWT authentication, refresh token support, password protection, and role-based authorization.
+- **Provider Verification**: Document upload and administrative review workflows for provider onboarding.
+- **Subscription System**: Tiered subscription plans for service providers with expiration and billing management.
+- **Service Request Lifecycle**: Complete workflow from request creation to provider selection, examination, execution, and completion.
+- **Competitive Bidding**: Providers can submit offers for customer service requests.
+- **Real-Time Communication**: SignalR-based chat and real-time status notifications.
+- **Live Status Updates**: Real-time synchronization of service and request statuses.
+- **Ratings & Reviews**: Customers can evaluate completed services.
+- **Analytics & Reporting**: Administrative statistics, revenue tracking, user growth, and performance reports.
+- **AI-Assisted Interaction**: Rule-based NLP and intent detection components.
 
 ---
 
 ## 3. System Architecture
 
+Fixoara follows a layered backend architecture that separates responsibilities between the Domain, Application, Infrastructure, and API layers.
+
+### Architecture Overview
+
+![Fixoara System Architecture](docs/images/fixoara-architecture.png)
+
+### Architecture Diagram
+
 ```mermaid
 graph TD
-    Client[Vanilla HTML/CSS/JS Frontend] -->|REST / JWT| WebAPI[ASP.NET Core 8 Web API]
-    Client -->|SignalR Hubs| Hubs[Chat & Notification Hubs]
-    WebAPI -->|DTOs| Application[Application layer: Services / Interfaces]
-    Hubs -->|Dispatchers| Application
-    Application -->|Entities| Domain[Domain Layer: Models / Enums]
-    Application -->|EF Core / Migrations| Infrastructure[Infrastructure Layer: persistence / Services]
-    Infrastructure -->|Clustered GUID keys| DB[(SQL Server DB)]
+    Client[HTML / CSS / JavaScript Frontend] -->|REST / JWT| WebAPI[ASP.NET Core 8 Web API]
+    Client -->|SignalR| Hubs[Chat & Notification Hubs]
+    WebAPI -->|DTOs| Application[Application Layer]
+    Hubs -->|Real-Time Events| Application
+    Application --> Domain[Domain Layer]
+    Application --> Infrastructure[Infrastructure Layer]
+    Infrastructure -->|EF Core / Migrations| DB[(SQL Server)]
 ```
 
 ### Architecture Details
-1. **Frontend Architecture**: Client-side vanilla JS architecture utilizing modular configuration blocks (`api.js`, `auth.js`, `tokenManager.js`, `signalr.js`, `loading.js`, `errorHandler.js`).
-2. **Backend Architecture**: Decoupled clean architecture separating concerns into:
-   - **Domain**: Contains persistent entities, value objects, and domain enums.
-   - **Application**: Holds DTOs, service contracts, mappings, and validation logic.
-   - **Infrastructure**: Houses EF Core DbContext, migrations, local disk storage management, and concrete helper services.
-   - **API**: Configures middleware, executes controllers, handles token validation, and manages SignalR sockets.
+
+1. **Frontend Architecture**: Client-side Vanilla JavaScript architecture using modular components.
+2. **Domain Layer**: Contains persistent entities, value objects, domain enums, and core business rules.
+3. **Application Layer**: Contains DTOs, service contracts, business logic, mappings, validation, and application services.
+4. **Infrastructure Layer**: Contains EF Core DbContext, migrations, persistence, file storage, and external service implementations.
+5. **API Layer**: Contains REST controllers, middleware, authentication, authorization, and SignalR hubs.
 
 ---
 
 ## 4. Tech Stack
 
-- **Frontend**: Vanilla HTML5, CSS3 (with Custom Variables & Dark Mode support), Modern Vanilla JavaScript (ES6+).
-- **Backend**: ASP.NET Core 8 Web API, Entity Framework Core (EF Core 8), SignalR, JWT Authentication.
-- **Database**: Microsoft SQL Server.
-- **Tooling**: Git, GitHub, Visual Studio, VS Code, Swagger UI.
+### Frontend
+
+- HTML5
+- CSS3
+- Vanilla JavaScript (ES6+)
+- Custom CSS variables
+- Dark mode support
+
+### Backend
+
+- C#
+- ASP.NET Core 8 Web API
+- Entity Framework Core 8
+- ASP.NET Core Identity
+- JWT Authentication
+- SignalR
+
+### Database
+
+- Microsoft SQL Server
+
+### Tools & Libraries
+
+- Swagger / OpenAPI
+- FluentValidation
+- AutoMapper
+- Serilog
+- Git
+- GitHub
+- Visual Studio
+- VS Code
+- Docker
+- Nginx / IIS
 
 ---
 
-## 5. Project Folder Structure
+## 5. AI-Assisted Components
 
-```
-Fixora_project/
-├── Backend_depi/              # Backend .NET Core Solution
+Fixoara includes an AI-assisted interaction component designed to improve user interaction with the platform.
+
+The system includes:
+
+- Rule-Based NLP Parser
+- Keyword Extraction
+- Intent Detection
+- Category Routing
+- Response Generation
+- Conversation History
+- Context Metadata
+
+---
+
+## 6. Project Folder Structure
+
+```text
+Fixoara/
+│
+├── Backend_depi/
 │   ├── src/
-│   │   ├── HomeEmergency.Domain/         # Entities, Enums, Domain Logic
-│   │   ├── HomeEmergency.Application/    # Interfaces, DTOs, Core Logic
-│   │   ├── HomeEmergency.Infrastructure/ # EF Core DbContext, Migrations
-│   │   └── HomeEmergency.API/            # Controllers, SignalR Hubs, Program.cs
+│   │   ├── HomeEmergency.Domain/
+│   │   │   └── Entities, Enums, Domain Logic
+│   │   ├── HomeEmergency.Application/
+│   │   │   └── Interfaces, DTOs, Services, Validation
+│   │   ├── HomeEmergency.Infrastructure/
+│   │   │   └── EF Core DbContext, Migrations, Persistence
+│   │   └── HomeEmergency.API/
+│   │       └── Controllers, SignalR Hubs, Program.cs
 │   ├── tests/
-│   │   └── HomeEmergency.Tests/          # Unit & Integration Tests
+│   │   └── HomeEmergency.Tests/
 │   └── HomeEmergency.sln
-└── fixora/                    # Frontend Vanilla JS Application
-    ├── css/                   # Stylesheets (layouts, variables, dark mode)
-    ├── html/                  # Web Views (Customer, Provider, Admin pages)
-    └── js/                    # Modular JS files (api.js, script.js, signalr.js)
+│
+├── fixora/
+│   ├── css/
+│   ├── html/
+│   └── js/
+│
+└── README.md
 ```
 
 ---
 
-## 6. User Roles & Permissions
+## 7. User Roles & Permissions
 
 | Role | Permissions & Workflows |
 |---|---|
-| **Customer** | Create requests, view/compare provider bids, assign technicans, track executions, rate services, chat live. |
-| **Provider** | Browse requests, submit bids/offers, upload verification files, purchase plans, execute jobs, write reviews. |
-| **Company** | Corporate provider account managing multiple field technicians and subscription limits. |
-| **Admin** | Access control management, warning issuances, document verification reviews, categories CRUD, plan CRUD, analytics reports. |
+| **Customer** | Create requests, view and compare provider bids, assign technicians, track executions, chat live, and rate services. |
+| **Provider** | Browse requests, submit bids, upload verification documents, purchase plans, execute jobs, and manage services. |
+| **Company** | Manage a corporate provider account, multiple technicians, and subscription limits. |
+| **Admin** | Manage users, verification documents, categories, plans, warnings, access control, and analytics. |
 
 ---
 
-## 7. Business Flow Diagram
+## 8. Main Business Flow
 
-```mermaid
-sequenceDiagram
-    autonumber
-    actor Customer
-    actor Provider
-    actor Admin
-
-    Provider->>Admin: Upload Verification Documents
-    Admin->>Provider: Approve Verification Documents
-    Provider->>Provider: Purchase Subscription Plan
-    Customer->>Customer: Create Service Request
-    Provider->>Customer: Submit Bids / Offers
-    Customer->>Provider: Accept Bid / Assign Job
-    Provider->>Customer: Perform Examination & Submit Report
-    Customer->>Provider: Approve Report / Authorize Work
-    Provider->>Customer: Execute & Complete Service
-    Customer->>Provider: Submit Ratings & Review
+```text
+Provider Registration
+        ↓
+Upload Verification Documents
+        ↓
+Admin Review & Approval
+        ↓
+Provider Subscription
+        ↓
+Customer Creates Service Request
+        ↓
+Providers Submit Bids / Offers
+        ↓
+Customer Selects Provider
+        ↓
+Provider Performs Examination
+        ↓
+Examination Report Submission
+        ↓
+Customer Approves Report
+        ↓
+Service Execution
+        ↓
+Service Completion
+        ↓
+Customer Rating & Review
 ```
 
 ---
 
-## 8. Real-Time WebSocket Synchronization
+## 9. Real-Time Communication
 
-Fixora implements real-time messaging and status push broadcasts via ASP.NET Core SignalR:
-- **Chat Hub (`hubs/chat`)**: Links active clients to real-time conversation channels (`chat:{chatId}`). Messages are pushed instantly and written to the database via backing REST API commands.
-- **Notification Hub (`hubs/notifications`)**: Connects logged-in users to personal message groups (`user:{userId}`). It delivers system announcements, status updates, and bidirectional alerts.
-- **Reconnection Resiliency**: The frontend uses `signalr.js` containing automatic reconconnections and exponential backoff, failing gracefully during network cuts without dropping core page functionalities.
+Fixoara uses **ASP.NET Core SignalR** for real-time communication and status synchronization.
+
+### Chat Hub
+
+The Chat Hub connects active users to real-time conversation channels and enables instant messaging.
+
+### Notification Hub
+
+The Notification Hub connects authenticated users to personal notification groups and delivers:
+
+- Service updates
+- Bid notifications
+- Status changes
+- System announcements
+
+### Reconnection Resiliency
+
+The frontend handles SignalR reconnection to maintain communication during temporary network interruptions.
 
 ---
 
-## 9. Security Implementations
+## 10. Security
 
-- **JWT Authentication**: Short-lived tokens with cryptographically signed headers.
-- **Silent Refresh Tokens**: Automatic API renewal cycles utilizing HttpOnly cookie structures or secure local token managers.
-- **Role-Based Authorization**: Blocked endpoints at backend level (`[Authorize(Roles = "Admin")]`) and client-side page protection checks.
-- **Upload Safety**: Validation of file size limits, extensions, and MIME contents for provider verification documents.
+Fixoara implements multiple security mechanisms:
+
+- **JWT Authentication**: Short-lived, cryptographically signed access tokens.
+- **Refresh Tokens**: Automatic token renewal.
+- **Role-Based Authorization**: Protected backend endpoints and role-specific access control.
+- **ASP.NET Core Identity**: User identity and authentication management.
+- **File Upload Validation**: File size, extension, and MIME/content validation.
 
 ---
 
-## 10. Core API Endpoints Reference
+## 11. Core API Endpoints Reference
 
 | Endpoint | Method | Role | Description |
 |---|---|---|---|
-| `/api/auth/register` | `POST` | Public | Register a new user |
-| `/api/auth/login` | `POST` | Public | Authenticate user and return JWT + Refresh Token |
-| `/api/service-requests` | `GET` | Admin, Provider | List all service requests |
-| `/api/service-requests` | `POST` | Customer | Post a new service request |
-| `/api/provider-offers` | `POST` | Provider | Submit a bid offer on a request |
-| `/api/admin/users/search` | `GET` | Admin | Search and filter system accounts |
-| `/api/admin/documents/pending` | `GET` | Admin | List pending provider verification uploads |
-| `/api/admin/analytics/users` | `GET` | Admin | Retrieve user growth statistics |
+| `/api/auth/register` | POST | Public | Register a new user |
+| `/api/auth/login` | POST | Public | Authenticate user and return JWT + Refresh Token |
+| `/api/service-requests` | GET | Admin, Provider | List all service requests |
+| `/api/service-requests` | POST | Customer | Post a new service request |
+| `/api/provider-offers` | POST | Provider | Submit a bid offer on a request |
+| `/api/admin/users/search` | GET | Admin | Search and filter system accounts |
+| `/api/admin/documents/pending` | GET | Admin | List pending provider verification uploads |
+| `/api/admin/analytics/users` | GET | Admin | Retrieve user growth statistics |
 
 ---
 
-## 11. Database Entity Mappings
+## 12. Database Entity Mappings
 
-The data persistent layer maps standard relations:
-- **One-to-One**: `ApplicationUser` mapped to `CustomerProfile`, `ProviderProfile`, and `CompanyProfile` sub-details.
-- **One-to-Many**: `Category` to `ServiceRequest`, `ApplicationUser` to `UserWarning`, `Chat` to `Message`.
-- **Many-to-Many**: `Chat` connections mapped to users via the `ChatParticipant` joining table.
+The persistence layer uses Entity Framework Core to manage relationships between the main application entities.
+
+### One-to-One
+
+- `ApplicationUser` → `CustomerProfile`
+- `ApplicationUser` → `ProviderProfile`
+- `ApplicationUser` → `CompanyProfile`
+
+### One-to-Many
+
+- `Category` → `ServiceRequest`
+- `ApplicationUser` → `UserWarning`
+- `Chat` → `Message`
+
+### Many-to-Many
+
+- `Chat` ↔ Users
+- Managed through the `ChatParticipant` joining table.
 
 ---
 
-## 12. Screenshots Placeholders
+## 13. My Contribution
 
-> [!TIP]
-> Add screenshots of the interface inside this section to showcase your presentation work.
-- **Admin Dashboard**: `![Admin Dashboard](docs/screenshots/admin-dashboard.png)`
-- **Marketplace bidding**: `![Provider Marketplace](docs/screenshots/provider-marketplace.png)`
-- **Chat Interface**: `![Real-Time Chat](docs/screenshots/chat-screen.png)`
+### Core Service System — Backend
+
+I contributed to the backend development of Fixoara as part of the **Core Service System**.
+
+My contribution included:
+
+- Developing backend APIs for core service functionality.
+- Implementing service-related business logic.
+- Working with specific domain entities and their relationships.
+- Designing and implementing service-related API endpoints.
+- Integrating backend services with Entity Framework Core.
+- Working with Microsoft SQL Server.
+- Implementing and working with authentication and authorization.
+- Applying role-based access control to protected functionality.
+- Following the project's layered architecture.
+- Integrating the Core Service System with the rest of the application.
 
 ---
 
-## 13. Installation & Run Guide
+## 14. Screenshots
+
+### Admin Dashboard
+
+![Admin Dashboard](docs/screenshots/admin-dashboard.png)
+
+### Provider Marketplace
+
+![Provider Marketplace](docs/screenshots/provider-marketplace.png)
+
+### Real-Time Chat
+
+![Real-Time Chat](docs/screenshots/chat-screen.png)
+
+> More screenshots can be added to showcase the application's main workflows and user interface.
+
+---
+
+## 15. Installation & Run Guide
 
 ### Prerequisites
+
 - .NET 8 SDK
-- SQL Server (LocalDB or Express)
-- Visual Studio / VS Code
-- IIS or static server (e.g. VS Code Live Server)
+- Microsoft SQL Server
+- Visual Studio or VS Code
+- IIS or a local static server
+- Git
 
-### Backend Configuration
-1. Navigate to the backend directory:
-   ```bash
-   cd Backend_depi
-   ```
-2. Update the database connection string in `src/HomeEmergency.API/appsettings.json`:
-   ```json
-   "ConnectionStrings": {
-     "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=HomeEmergencyDb;Trusted_Connection=True;"
-   }
-   ```
-3. Apply Entity Framework database migrations:
-   ```bash
-   dotnet ef database update --project src/HomeEmergency.Infrastructure --startup-project src/HomeEmergency.API
-   ```
-4. Start the backend Web API:
-   ```bash
-   dotnet run --project src/HomeEmergency.API
-   ```
+### Backend Setup
 
-### Frontend Configuration
-1. Open the file `fixora/js/config.js` and set the backend URL:
-   ```javascript
-   const CONFIG = {
-       API_BASE_URL: "http://localhost:5000/api/",
-       HUB_BASE_URL: "http://localhost:5000/hubs/"
-   };
-   ```
-2. Run the frontend folder using a local server (e.g., Live Server extension in VS Code).
+Navigate to the backend directory:
 
----
+```bash
+cd Backend_depi
+```
 
-## 14. Testing
+Restore dependencies:
 
-### Run Builds
+```bash
+dotnet restore
+```
+
+Build the project:
+
 ```bash
 dotnet build
 ```
 
-### Run Unit Tests
+### Database Configuration
+
+Configure the SQL Server connection string in:
+
+```text
+src/HomeEmergency.API/appsettings.json
+```
+
+Example:
+
+```json
+"ConnectionStrings": {
+    "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=HomeEmergencyDb;Trusted_Connection=True;"
+}
+```
+
+> Replace the example connection string with your own local SQL Server configuration. Never commit real passwords, API keys, or other secrets.
+
+### Apply Migrations
+
+```bash
+dotnet ef database update --project src/HomeEmergency.Infrastructure --startup-project src/HomeEmergency.API
+```
+
+### Run the Backend
+
+```bash
+dotnet run --project src/HomeEmergency.API
+```
+
+### Frontend Setup
+
+Open:
+
+```text
+fixora/
+```
+
+Configure the backend URL in:
+
+```text
+fixora/js/config.js
+```
+
+Example:
+
+```javascript
+const CONFIG = {
+    API_BASE_URL: "http://localhost:5000/api/",
+    HUB_BASE_URL: "http://localhost:5000/hubs/"
+};
+```
+
+Run the frontend using a local development server such as **VS Code Live Server**.
+
+---
+
+## 16. Testing
+
+### Build
+
+```bash
+dotnet build
+```
+
+### Unit Tests
+
 ```bash
 dotnet test
 ```
 
 ---
 
-## 15. Contributors
+## 17. Project Status
 
-- **Technical Lead & Architect**: Salma H.
-- **Development Team**: Home Emergency Project contributors.
+**Version:** `v1.0.0`
 
----
-
-## 16. License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
+**Status:** Completed
 
 ---
 
-## 17. Version Information
-- **Version**: `v1.0.0`
-- **Release State**: Production Ready Release (Phase 1-11 Complete).
+## 18. Contributors
+
+- **Technical Lead & Architect:** Salma H.
+- **Development Team:** Home Emergency Project contributors.
+
+---
+
+## 19. License
+
+This project is licensed under the MIT License.
+
+See the `LICENSE` file for more information.
+
+---
+
+## 20. Project Information
+
+**Fixoara — Emergency Home Services Marketplace**
+
+A full-stack .NET project focused on:
+
+- Real-time communication
+- Secure backend architecture
+- Emergency service management
+- Provider verification
+- Competitive bidding
+- Scalable web application development
+- AI-assisted interaction
